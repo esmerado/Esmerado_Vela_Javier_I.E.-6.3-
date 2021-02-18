@@ -18,51 +18,91 @@ public class Banco {
     }
 
     public void accederCliente(){
-        System.out.println("Introduce el dni del cliente al que desea acceder: ");
-        String dni = sc.nextLine();
-        Cliente cli = cliente.get(dni);
-        if (cli != null){
-            System.out.println("Bienvenido!!");
-        }else {
-            System.err.println("Lo sentimos no hay ningún cliente registrado con este DNI!!");
+        try {
+            System.out.println("Introduce el dni del cliente al que desea acceder: ");
+            String dni = sc.nextLine();
+            Cliente cli = cliente.get(dni);
+            if (cli != null) {
+                System.out.println("Bienvenido!!");
+            } else {
+                System.err.println("Lo sentimos no hay ningún cliente registrado con este DNI!!");
+                System.out.println("Qué operación deseas realizar: ");
+                System.out.println("1.- Registrarme");
+                System.out.println("2.- Salir");
+                int n = sc.nextInt();
+                switch (n){
+                    case 1:
+                        nuevoCliente();break;
+                    case 2:
+                        System.out.println("Hasta pronto!!");
+                        System.exit(1);break;
+                }
+            }
+            do {
+                System.out.println("Qué operacion desea realizar??");
+                System.out.println("1.- Nuevo cliente");
+                System.out.println("2.- Eliminar cliente");
+                System.out.println("3.- Nueva cuenta");
+                System.out.println("4.- Eliminar cuenta");;
+                System.out.println("5.- Lista clientes");
+                System.out.println("6.- Listar cuentas");
+                System.out.println("7.- Ingresar dinero");
+                System.out.println("8.- Sacar dinero");
+                System.out.println("9.- Consultar saldo");
+                System.out.println("10.- Revision mensual");
+                System.out.println("11.- Cambiar comisión mensual");
+                System.out.println("12.- Salir");
+                int num = sc.nextInt();
+                switch (num) {
+                    case 1:
+                        nuevoCliente();
+                        break;
+                    case 2:
+                        eliminarCliente();
+                        break;
+                    case 3:
+                        nuevaCuenta(cli);
+                        break;
+                    case 4:
+                        eliminarCuenta(cli);
+                        break;
+                    case 5:
+                        mostrarClientes();
+                        break;
+                    case 6:
+                        mostrarCuenta(cli);
+                        break;
+                    case 7:
+                        ingresarDinero(cli);
+                        break;
+                    case 8:
+                        sacarDinero(cli);
+                        break;
+                    case 9:
+                        mostrarSaldo(cli);
+                        break;
+                    case 10:
+                        revisionMensual(cli);
+                        break;
+                    case 11:
+                        cambiarComision(cli);
+                        break;
+                    default:
+                        System.out.println("VUELVA PRONTO!!");
+                        System.exit(1);
+                        break;
+                }
+
+            } while (true);
+        }catch (Exception e){
+            System.err.println("Ha introducido algún valor erróneo");
             System.exit(1);
         }
-        do{
-            System.out.println("Qué operacion desea realizar??");
-            System.out.println("1.- Eliminar cuenta");
-            System.out.println("2.- Añadir cuenta");
-            System.out.println("3.- Ingresar dinero");
-            System.out.println("4.- Mostrar cuentas");
-            System.out.println("5.- Sacar dinero");
-            System.out.println("6.- Mostrar saldo");
-            System.out.println("7.- Revision mensual");
-            System.out.println("8.- Cambiar comisión");
-            int num = sc.nextInt();
-            switch (num){
-                case 1:
-                    eliminarCuenta(cli);break;
-                case 2:
-                    nuevaCuenta(cli);break;
-                case 3:
-                    ingresarDinero(cli);break;
-                case 4:
-                    mostrarCuenta(cli);break;
-                case 5:
-                    sacarDinero(cli);break;
-                case 6:
-                    mostrarSaldo(cli);break;
-                case 7:
-                    revisionMensual(cli);break;
-                case 8:
-                    cambiarComision(cli);
-            }
-
-        }while (true);
-
     }
 
 
     public void nuevoCliente(){
+        sc.nextLine();
         System.out.println("Introduzca su DNI: ");
         String dni = sc.nextLine();
         System.out.println("Introduzca su nombre: ");
@@ -106,7 +146,7 @@ public class Banco {
         System.out.println("ESTAS SON LOS CLIENTES DISPONIBLES: ");
         mostrarClientes();
         System.out.println("Introduzca el dni del cliente que desea eliminar: ");
-        String dni = sc.nextLine();
+        String dni = sc.next();
         if (cliente.containsKey(dni)){
             cliente.remove(dni);
             System.out.println("Cliente eliminado con éxito!!");
@@ -142,19 +182,18 @@ public class Banco {
     }
 
     public void ingresarDinero(Cliente cli){
+        if (cli.empty() == true){
+            System.out.println("No hay cuentas disponibles");
+            System.exit(1);
+        }
         mostrarCuenta(cli);
         System.out.println("En que cuenta desea añadir el dinero: ");
         int key = sc.nextInt();
         if (cli.getlCuentas().containsKey(key)){
-            System.out.println("Qué cantidad de dinero desea sacar: ");
+            System.out.println("Qué cantidad de dinero desea ingresar: ");
             double cant = sc.nextDouble();
-            if (cli.consultarSaldo(key) > cant){
-                cli.sacarDinero(cant, key);
-                System.out.println("El dinero ha sido retirado con éxito!!");
-            }else {
-                System.out.println("Lo sentimos el saldo de su cuenta es inferior a la cantidad que desea sacar!!");
-                System.exit(1);
-            }
+            cli.ingresarDinero(cant, key);
+            System.out.println("El dinero ha sido ingresasado con éxito!!");
         }else {
             System.out.println("Lo sentimos la cuenta seleccionada no existe!!");
             System.exit(1);
@@ -162,6 +201,10 @@ public class Banco {
     }
 
     public void sacarDinero(Cliente cli){
+        if (cli.empty() == true){
+            System.out.println("No hay cuentas disponibles");
+            System.exit(1);
+        }
         mostrarCuenta(cli);
         System.out.println("En que cuenta desea sacar el dinero: ");
         int key = sc.nextInt();
@@ -186,6 +229,10 @@ public class Banco {
     }
 
     public void revisionMensual(Cliente cli){
+        if (cli.empty() == true){
+            System.out.println("No hay cuentas disponibles");
+            System.exit(1);
+        }
         mostrarCuenta(cli);
         System.out.println("De que cuenta desea saber la revisión mensual: ");
         int key = sc.nextInt();
@@ -197,11 +244,16 @@ public class Banco {
     }
 
     public void cambiarComision(Cliente cli){
+        if (cli.empty() == true){
+            System.out.println("No hay cuentas disponibles");
+            System.exit(1);
+        }
+        Scanner s = new Scanner(System.in);
         mostrarCuenta(cli);
         System.out.println("De que cuenta desea cambiar la comisión: ");
-        int key = sc.nextInt();
+        int key = s.nextInt();
         System.out.println("A cuánto desea cambiar la comisión: ");
-        double comi = sc.nextDouble(); //Fallo al introducir el valor Double
+        double comi = s.nextDouble();
         if (cli.getlCuentas().containsKey(key)){
             cli.cambiarComision(key, comi);
         }else {

@@ -104,6 +104,10 @@ public class Cliente {
         lCuentas.get(key).setComision(comi);
     }
 
+    public boolean empty(){
+        return lCuentas.isEmpty();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
