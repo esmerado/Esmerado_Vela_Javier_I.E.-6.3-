@@ -9,46 +9,58 @@ import java.util.stream.Stream;
 public class Banco {
 
     Scanner sc = new Scanner(System.in);
-    ArrayList<Cliente> cliente;
-    ArrayList<Cuenta> cuenta;
+    Map<String, Cliente> cliente;
 
-    public Banco(ArrayList<Cliente> cliente, ArrayList<Cuenta> cuenta) {
+
+
+    public Banco(Map<String, Cliente> cliente) {
         this.cliente = cliente;
-        this.cuenta = cuenta;
     }
 
-    public void ingresarDinero(){
-        int cant;
-        System.out.println("¿Qué cantidad desea ingresa?: ");
-        cant = sc.nextInt();
-        cuenta.values().parallelStream()
-                .forEach(d -> {
-                    d.setDinero(d.getDinero() + cant);
-                });
-
-        /*for (Cuenta l: cuenta){
-            double cant2 = l.getDinero();
-            l.setDinero((cant2 + cant));
-        }*/
-    }
-
-    public void sacarDinero(){
-        int cant;
-        System.out.println("¿Qué cantidad desea sacar?: ");
-        cant = sc.nextInt();
-        .forEach(d -> {
-                    d.setDinero(d.getDinero() - cant);
-                });
-
-    }
-
-    public void consultarSaldo(){
-        System.out.println("Introduzca su DNI: ");
+    public void accederCliente(){
+        System.out.println("Introduce el dni del cliente al que desea acceder: ");
         String dni = sc.nextLine();
-        cuenta.values().parallelStream()
-                .filter(l -> cuenta.containsKey(dni))
-                .forEach(l -> System.out.println(l.getDinero()));
+        Cliente cli = cliente.get(dni);
+        if (cli != null){
+            System.out.println("Bienvenido!!");
+        }else {
+            System.err.println("Lo sentimos no hay ningún cliente registrado con este DNI!!");
+            System.exit(1);
+        }
+        do{
+            System.out.println("Qué operacion desea realizar??");
+            System.out.println("1.- Eliminar cuenta");
+            System.out.println("2.- Añadir cuenta");
+            System.out.println("3.- Ingresar dinero");
+            System.out.println("4.- Mostrar cuentas");
+            System.out.println("5.- Sacar dinero");
+            System.out.println("6.- Mostrar saldo");
+            System.out.println("7.- Revision mensual");
+            System.out.println("8.- Cambiar comisión");
+            int num = sc.nextInt();
+            switch (num){
+                case 1:
+                    eliminarCuenta(cli);break;
+                case 2:
+                    nuevaCuenta(cli);break;
+                case 3:
+                    ingresarDinero(cli);break;
+                case 4:
+                    mostrarCuenta(cli);break;
+                case 5:
+                    sacarDinero(cli);break;
+                case 6:
+                    mostrarSaldo(cli);break;
+                case 7:
+                    revisionMensual(cli);break;
+                case 8:
+                    cambiarComision(cli);
+            }
+
+        }while (true);
+
     }
+
 
     public void nuevoCliente(){
         System.out.println("Introduzca su DNI: ");
@@ -66,7 +78,7 @@ public class Banco {
                 .ifPresentOrElse(l -> {
                     System.err.println("Lo sentimos este usuario ya es cliente!!");
                 }, () -> {
-                    cliente.put(dni, new Cliente(dni, nombre, apellidos, direc, telf, ));
+                    cliente.put(dni, new Cliente(dni, nombre, apellidos, direc, telf));
                 });
 
         /*for (Cliente c: cliente){
@@ -79,50 +91,123 @@ public class Banco {
 
     }
 
+    public void nuevaCuenta(Cliente cli){
+        cli.añadirCuenta(new Cuenta());
+        System.out.println("Cuenta añadida con éxito!!");
+
+        /*if (cliente.containsKey(dni)){
+            cliente.get(dni).añadirCuenta(new Cuenta());
+        }else {
+            System.err.println("Lo sentimos, este DNI no está asociado a ninguna cuenta!!");
+        }*/
+    }
+
     public void eliminarCliente(){
-        System.out.println("Introduzca el DNI del cliente que desea introducir: ");
+        System.out.println("ESTAS SON LOS CLIENTES DISPONIBLES: ");
+        mostrarClientes();
+        System.out.println("Introduzca el dni del cliente que desea eliminar: ");
         String dni = sc.nextLine();
         if (cliente.containsKey(dni)){
             cliente.remove(dni);
-            cuenta.remove(dni);
+            System.out.println("Cliente eliminado con éxito!!");
+            System.out.println("Vuelva a inciar sesión");
+            System.exit(1);
         }else {
-            System.err.println("Lo sentimos no hay ninguna cuenta vinculada a este DNI");
+            System.out.println("Lo sentimos no se encuentra ninguna cuenta asociada a ese dni.");
+            System.out.println("Vuelva a inciar sesión");
+            System.exit(1);
         }
-
     }
 
-    public void nuevaCuenta(){
-        System.out.println("Introduzca su DNI: ");
-        String dni = sc.nextLine();
-        if (cliente.containsKey(dni)){
-            if (cuenta.containsKey(dni)){
-                System.out.println("Lo sentimos ya hay una cuenta asociada a este DNI");
+    public void eliminarCuenta(Cliente cli){
+        cli.mostrarCuentas();
+        System.out.println("Introduzca el número de la cuenta que desea eliminar: ");
+        int key = sc.nextInt();
+        if (cli.getlCuentas().containsKey(key)){
+            cli.eliminarCuentas(key);
+            System.out.println("Cuenta eliminada con éxito!!");
+        }else {
+            System.out.println("Lo sentimos ha seleccionado una clave inexistente!!");
+            System.exit(1);
+        }
+    }
+
+    public void mostrarClientes(){
+        cliente.values().stream()
+                .forEach(System.out::println);
+    }
+
+    public void mostrarCuenta(Cliente cli){
+        cli.mostrarCuentas();
+    }
+
+    public void ingresarDinero(Cliente cli){
+        mostrarCuenta(cli);
+        System.out.println("En que cuenta desea añadir el dinero: ");
+        int key = sc.nextInt();
+        if (cli.getlCuentas().containsKey(key)){
+            System.out.println("Qué cantidad de dinero desea sacar: ");
+            double cant = sc.nextDouble();
+            if (cli.consultarSaldo(key) > cant){
+                cli.sacarDinero(cant, key);
+                System.out.println("El dinero ha sido retirado con éxito!!");
             }else {
-                cuenta.put(dni, new Cuenta(0, 0));
+                System.out.println("Lo sentimos el saldo de su cuenta es inferior a la cantidad que desea sacar!!");
+                System.exit(1);
             }
         }else {
-            System.err.println("Lo sentimos, este DNI no está asociado a ninguna cuenta!!");
+            System.out.println("Lo sentimos la cuenta seleccionada no existe!!");
+            System.exit(1);
         }
     }
 
-    public void mostrarClientesCuentas(){
-        System.out.println("Cuentas: ");
-        cuenta.values().parallelStream()
-                .forEach(System.out::println);
-        System.out.println("Clientes: ");
-        cliente.values().parallelStream()
-                .forEach(System.out::println);
+    public void sacarDinero(Cliente cli){
+        mostrarCuenta(cli);
+        System.out.println("En que cuenta desea sacar el dinero: ");
+        int key = sc.nextInt();
+        if (cli.getlCuentas().containsKey(key)){
+            System.out.println("Qúe cantidad desea sacar: ");
+            double cant = sc.nextDouble();
+            cli.sacarDinero(cant, key);
+        }else {
+            System.out.println("Lo sentimos la cuenta seleccionada no existe!!");
+        }
     }
 
-    public void revisionMensual(){
-        System.out.println("Introduzca su DNI: ");
-        String dni = sc.nextLine();
-        cuenta.values().parallelStream()
-                .filter(l -> (l.getDinero() + (l.getInteres()*l.getAntiguedad() - (l.getAntiguedad()*l.getAntiguedad()))))
-
-
+    public void mostrarSaldo(Cliente cli){
+        mostrarCuenta(cli);
+        System.out.println("De que cuenta deseas saber el saldo: ");
+        int key = sc.nextInt();
+        if (cli.getlCuentas().containsKey(key)){
+            System.out.println("Su saldo es: " + cli.consultarSaldo(key));
+        }else {
+            System.out.println("Lo sentimos la cuenta seleccionada no existe!!");
+        }
     }
 
+    public void revisionMensual(Cliente cli){
+        mostrarCuenta(cli);
+        System.out.println("De que cuenta desea saber la revisión mensual: ");
+        int key = sc.nextInt();
+        if (cli.getlCuentas().containsKey(key)){
+            System.out.println("La revisión mensual es de: " + cli.revisionMensual(key));
+        }else {
+            System.out.println("Lo sentimos la cuenta seleccionada no existe!!");
+        }
+    }
+
+    public void cambiarComision(Cliente cli){
+        mostrarCuenta(cli);
+        System.out.println("De que cuenta desea cambiar la comisión: ");
+        int key = sc.nextInt();
+        System.out.println("A cuánto desea cambiar la comisión: ");
+        double comi = sc.nextDouble(); //Fallo al introducir el valor Double
+        if (cli.getlCuentas().containsKey(key)){
+            cli.cambiarComision(key, comi);
+        }else {
+            System.out.println("Lo sentimos la cuenta seleccionada no existe!!");
+        }
+    }
 }
 
 

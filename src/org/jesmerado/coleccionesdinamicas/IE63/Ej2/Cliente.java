@@ -8,7 +8,7 @@ public class Cliente {
     private String apellido;
     private String direccion;
     private int telefono;
-    private Map<String, Cuenta> lCuentas;
+    private Map<Integer, Cuenta> lCuentas;
 
     public Cliente(String dni, String nombre, String apellido, String direccion, int telefono) {
         this.dni = dni;
@@ -16,13 +16,14 @@ public class Cliente {
         this.apellido = apellido;
         this.direccion = direccion;
         this.telefono = telefono;
+        this.lCuentas = new HashMap<>();
     }
 
     public Map getlCuentas() {
         return lCuentas;
     }
 
-    public void setlCuentas(ArrayList lCuentas) {
+    public void setlCuentas(Map lCuentas) {
         this.lCuentas = lCuentas;
     }
 
@@ -66,6 +67,43 @@ public class Cliente {
         this.telefono = telefono;
     }
 
+    public void añadirCuenta(Cuenta lcuenta){
+        this.lCuentas.put(lcuenta.getNumCuenta(), lcuenta);
+    }
+
+    public void mostrarCuentas(){
+        if (lCuentas.isEmpty()){
+            System.out.println("Lo sentimos no hay ninguna cuenta creada");
+        }else {
+            lCuentas.values().stream()
+                    .forEach(System.out::println);
+        }
+    }
+
+    public void ingresarDinero(double cant, int key){
+        lCuentas.get(key).anadirDinero(cant);
+    }
+
+    public void sacarDinero(double cant, int key){
+        lCuentas.get(key).sacarDinero(cant);
+    }
+
+    public void eliminarCuentas(int key){
+        lCuentas.remove(key);
+    }
+
+    public double consultarSaldo(int key){
+        return lCuentas.get(key).getDinero();
+    }
+
+    public double revisionMensual(int key){
+        return lCuentas.get(key).revisionMensual();
+    }
+
+    public void cambiarComision(int key, double comi){
+        lCuentas.get(key).setComision(comi);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,9 +120,9 @@ public class Cliente {
     @Override
     public String toString() {
         return "dni=" + dni +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", telefono='" + telefono;
+                ", nombre: '" + nombre + '\'' +
+                ", apellido: '" + apellido + '\'' +
+                ", direccion: '" + direccion + '\'' +
+                ", telefono: '" + telefono;
     }
 }

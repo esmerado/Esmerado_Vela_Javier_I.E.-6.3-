@@ -5,15 +5,14 @@ import java.util.*;
 public class BancoMain {
     public static void main(String[] args) {
 
-        ArrayList<Cliente> cliente = new ArrayList<>();
-        ArrayList<Cuenta> cuenta = new ArrayList<>();
+        Map<String, Cliente> cliente = new TreeMap<>();
 
-        Banco b = new Banco(cliente, cuenta);
-        cliente.add(new Cliente("77822787X", "Javier", "Esmerado", "aldonoquijhano", 627478400));
-        cliente.add(new Cliente("12345678A", "Jav", "Esme", "aldonoquijhano", 600471635));
-        cuenta.add(new Cuenta(1200, 5));
+        Scanner sc = new Scanner(System.in);
+        Banco b = new Banco(cliente);
+        cliente.put("77822787X",new Cliente("77822787X", "Javier", "Esmerado", "aldonoquijhano", 627478400));
+        cliente.put("12345678A", new Cliente("12345678A", "Jav", "Esme", "aldonoquijhano", 600471635));
 
-        b.consultarSaldo();
 
+        b.accederCliente();
     }
 }

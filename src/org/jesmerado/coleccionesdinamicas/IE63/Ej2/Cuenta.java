@@ -3,13 +3,42 @@ package org.jesmerado.coleccionesdinamicas.IE63.Ej2;
 import java.util.Objects;
 
 public class Cuenta {
-    private double dinero;
+    private int numCuenta;
+    private double dinero = 1000;
     private double interes = 0.1d;
-    private int antiguedad = 0;
+    private int antiguedad = 5;
+    private double comision = 0.6;
+    private static int cont = 1;
+
+    public Cuenta() {
+        numCuenta = cont++;
+    }
 
     public Cuenta(double dinero, int antiguedad) {
         this.dinero = dinero;
         this.antiguedad = antiguedad;
+        this.numCuenta = cont;
+        cont++;
+    }
+
+    public double revisionMensual(){
+        return dinero = dinero + (antiguedad*interes) + (antiguedad*comision);
+    }
+
+    public void anadirDinero(double dinero){
+        this.dinero += dinero;
+    }
+
+    public void sacarDinero(double dinero){
+        this.dinero -= dinero;
+    }
+
+    public int getNumCuenta() {
+        return numCuenta;
+    }
+
+    public void setNumCuenta(int numCuenta) {
+        this.numCuenta = numCuenta;
     }
 
     public int getAntiguedad() {
@@ -36,6 +65,13 @@ public class Cuenta {
         this.interes = interes;
     }
 
+    public double getComision() {
+        return comision;
+    }
+
+    public void setComision(double comision) {
+        this.comision = comision;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -52,7 +88,10 @@ public class Cuenta {
 
     @Override
     public String toString() {
-        return "dinero=" + dinero + ", antiguedad=" + antiguedad;
+        return "numCuenta=" + numCuenta +
+                ", dinero=" + dinero +
+                ", antiguedad=" + antiguedad +
+                ", comision=" + comision;
     }
 }
 
