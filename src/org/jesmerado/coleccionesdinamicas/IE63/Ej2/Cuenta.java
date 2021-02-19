@@ -2,6 +2,10 @@ package org.jesmerado.coleccionesdinamicas.IE63.Ej2;
 
 import java.util.Objects;
 
+/**
+ * @author esmer
+ * Vamos a usar esta clase Cuenta para crear las variables que van a tener las cuentas de cada cliente.
+ */
 public class Cuenta {
     private int numCuenta;
     private double dinero = 1000;
@@ -14,21 +18,36 @@ public class Cuenta {
         numCuenta = cont++;
     }
 
+    /**
+     *
+     * @param dinero
+     * @param antiguedad
+     */
     public Cuenta(double dinero, int antiguedad) {
         this.dinero = dinero;
         this.antiguedad = antiguedad;
         this.numCuenta = cont;
         cont++;
     }
-
+    /*
+    Revisión mensual
+     */
     public double revisionMensual(){
         return dinero = dinero + (antiguedad*interes) + (antiguedad*comision);
     }
 
+    /**
+     * Método para añadir dinero a nuestra cuenta.
+     * @param dinero
+     */
     public void anadirDinero(double dinero){
         this.dinero += dinero;
     }
 
+    /**
+     * Método para sacar dinero de nuestra cuenta
+     * @param dinero
+     */
     public void sacarDinero(double dinero){
         this.dinero -= dinero;
     }

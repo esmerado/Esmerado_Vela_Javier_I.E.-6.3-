@@ -2,6 +2,9 @@ package org.jesmerado.coleccionesdinamicas.IE63.Ej2;
 
 import java.util.*;
 
+/**
+ * @author esmer
+ */
 public class Cliente {
     private String dni;
     private String nombre;
@@ -10,6 +13,14 @@ public class Cliente {
     private int telefono;
     private Map<Integer, Cuenta> lCuentas;
 
+    /**
+     * Constructor con las variables de nuestro cliente y la colección de cuentas inicializada.
+     * @param dni
+     * @param nombre
+     * @param apellido
+     * @param direccion
+     * @param telefono
+     */
     public Cliente(String dni, String nombre, String apellido, String direccion, int telefono) {
         this.dni = dni;
         this.nombre = nombre;
@@ -67,10 +78,17 @@ public class Cliente {
         this.telefono = telefono;
     }
 
-    public void añadirCuenta(Cuenta lcuenta){
+    /**
+     * Método para añadir cuentas a nuestro cliente.
+     * @param lcuenta
+     */
+    public void anadirCuenta(Cuenta lcuenta){
         this.lCuentas.put(lcuenta.getNumCuenta(), lcuenta);
     }
 
+    /**
+     * Método  para mostrar las cuentas de nuestro cliente
+     */
     public void mostrarCuentas(){
         if (lCuentas.isEmpty()){
             System.out.println("Lo sentimos no hay ninguna cuenta creada");
@@ -80,30 +98,63 @@ public class Cliente {
         }
     }
 
+    /**
+     * Método para ingresar dinero a nuestra cuenta
+     * @param cant
+     * @param key
+     */
     public void ingresarDinero(double cant, int key){
         lCuentas.get(key).anadirDinero(cant);
     }
 
+    /**
+     * Método para sacar dinero de nuestra cuenta
+     * @param cant
+     * @param key
+     */
     public void sacarDinero(double cant, int key){
         lCuentas.get(key).sacarDinero(cant);
     }
 
+    /**
+     * Método para eliminar cuentas
+     * @param key
+     */
     public void eliminarCuentas(int key){
         lCuentas.remove(key);
     }
 
+    /**
+     * Método para consultar el saldo
+     * @param key
+     * @return
+     */
     public double consultarSaldo(int key){
         return lCuentas.get(key).getDinero();
     }
 
+    /**
+     * Calculo de la revisión mensual
+     * @param key
+     * @return
+     */
     public double revisionMensual(int key){
         return lCuentas.get(key).revisionMensual();
     }
 
+    /**
+     * Cambio de la comisión
+     * @param key
+     * @param comi
+     */
     public void cambiarComision(int key, double comi){
         lCuentas.get(key).setComision(comi);
     }
 
+    /**
+     * Método para saber si hay alguna cuenta creada
+     * @return
+     */
     public boolean empty(){
         return lCuentas.isEmpty();
     }

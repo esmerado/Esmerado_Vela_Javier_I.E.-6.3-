@@ -17,6 +17,9 @@ public class Banco {
         this.cliente = cliente;
     }
 
+    /**
+     * Método general para el acceso a nuestra aplicación
+     */
     public void accederCliente(){
         try {
             System.out.println("Introduce el dni del cliente al que desea acceder: ");
@@ -100,7 +103,9 @@ public class Banco {
         }
     }
 
-
+    /**
+     * Método para crear nuevos clientes
+     */
     public void nuevoCliente(){
         sc.nextLine();
         System.out.println("Introduzca su DNI: ");
@@ -131,9 +136,13 @@ public class Banco {
 
     }
 
+    /**
+     * Método para crear cuentas
+     * @param cli
+     */
     public void nuevaCuenta(Cliente cli){
-        cli.añadirCuenta(new Cuenta());
-        System.out.println("Cuenta añadida con éxito!!");
+        cli.anadirCuenta(new Cuenta());
+        System.out.println("Cuenta anadida con éxito!!");
 
         /*if (cliente.containsKey(dni)){
             cliente.get(dni).añadirCuenta(new Cuenta());
@@ -142,6 +151,9 @@ public class Banco {
         }*/
     }
 
+    /**
+     * Método para eliminar clientes
+     */
     public void eliminarCliente(){
         System.out.println("ESTAS SON LOS CLIENTES DISPONIBLES: ");
         mostrarClientes();
@@ -159,6 +171,10 @@ public class Banco {
         }
     }
 
+    /**
+     * Método para eliminar cuentas
+     * @param cli
+     */
     public void eliminarCuenta(Cliente cli){
         cli.mostrarCuentas();
         System.out.println("Introduzca el número de la cuenta que desea eliminar: ");
@@ -172,15 +188,26 @@ public class Banco {
         }
     }
 
+    /**
+     * Método para mostrar clientes
+     */
     public void mostrarClientes(){
         cliente.values().stream()
                 .forEach(System.out::println);
     }
 
+    /**
+     * Método para mostrar cuentas
+     * @param cli
+     */
     public void mostrarCuenta(Cliente cli){
         cli.mostrarCuentas();
     }
 
+    /**
+     * Método para ingresar dinero
+     * @param cli
+     */
     public void ingresarDinero(Cliente cli){
         if (cli.empty() == true){
             System.out.println("No hay cuentas disponibles");
@@ -200,6 +227,10 @@ public class Banco {
         }
     }
 
+    /**
+     * Método para sacar dinero
+     * @param cli
+     */
     public void sacarDinero(Cliente cli){
         if (cli.empty() == true){
             System.out.println("No hay cuentas disponibles");
@@ -217,6 +248,10 @@ public class Banco {
         }
     }
 
+    /**
+     * Método para mostrar el saldo
+     * @param cli
+     */
     public void mostrarSaldo(Cliente cli){
         mostrarCuenta(cli);
         System.out.println("De que cuenta deseas saber el saldo: ");
@@ -228,6 +263,10 @@ public class Banco {
         }
     }
 
+    /**
+     * Método para el cálculo de la revisión mensual
+     * @param cli
+     */
     public void revisionMensual(Cliente cli){
         if (cli.empty() == true){
             System.out.println("No hay cuentas disponibles");
@@ -243,6 +282,10 @@ public class Banco {
         }
     }
 
+    /**
+     * Método para el cambio de la comisión
+     * @param cli
+     */
     public void cambiarComision(Cliente cli){
         if (cli.empty() == true){
             System.out.println("No hay cuentas disponibles");

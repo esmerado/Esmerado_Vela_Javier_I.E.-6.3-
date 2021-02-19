@@ -18,7 +18,10 @@ public class BibliotecaM {
     public BibliotecaM() {
     }
 
-    public void añadirLibro(){
+    /**
+     * Método para añadir libros
+     */
+    public void anadirLibro(){
         int cont = 1;
         int numL = 0;
             try{
@@ -65,7 +68,10 @@ public class BibliotecaM {
         }while (cont <= numL);
     }
 
-    public void añadirSocio(){
+    /**
+     * Método para añadir socios
+     */
+    public void anadirSocio(){
 
         int cont = 1;
         int numS = 0;
@@ -118,7 +124,9 @@ public class BibliotecaM {
 
     }
 
-
+    /**
+     * Método para mostrar los libros
+     */
     public void mostrarLibros(){
         lLibros.stream()
                 .forEach(System.out::println);
@@ -133,6 +141,9 @@ public class BibliotecaM {
         }*/
     }
 
+    /**
+     * Método para mostrar socios
+     */
     public void mostrarSocios(){
         lSocios.stream()
                 .forEach(System.out::println);
@@ -147,6 +158,9 @@ public class BibliotecaM {
         }*/
     }
 
+    /**
+     * Método para eliminar libros
+     */
     public void eliminarLibro(){
         int cont = 1;
         int numL = 0;
@@ -179,6 +193,9 @@ public class BibliotecaM {
         }while (cont <= numL);
     }
 
+    /**
+     * Método para eliminar socios
+     */
     public void eliminarSocio(){
         int cont = 1;
         int numS = 0;
@@ -210,6 +227,9 @@ public class BibliotecaM {
         }while (cont <= numS);
     }
 
+    /**
+     * Método general
+     */
     public void atenderPeticion(){
         double ncarnet;
         String titulo;
@@ -246,7 +266,7 @@ public class BibliotecaM {
                                             j.setDisponible(l.getNumCarnet());
                                             System.out.println("Libro sacado con exito!!");break;
                                         }else if (false){
-                                            System.err.println("¡¡ESTE LIBRO NO ESTÁ DISPONIBLE!!");
+                                            System.err.println("¡¡ESTE LIBRO NO ESTA DISPONIBLE!!");
                                         }
                                     }else {
                                         System.err.println("¡¡NO HAY NINGÚN LIBRO DISPONIBLE EN LA BIBLIOTECA!!");
@@ -256,13 +276,13 @@ public class BibliotecaM {
                                 }break;
 
                             case 2:
-                                añadirLibro();break;
+                                anadirLibro();break;
 
                             case 3:
                                 eliminarLibro();break;
 
                             case 4:
-                                añadirSocio();break;
+                                anadirSocio();break;
 
                             case 5:
                                 eliminarSocio();break;
@@ -300,7 +320,7 @@ public class BibliotecaM {
                         int i = sc.nextInt();
                         switch (i){
                             case 1:
-                                añadirSocio();
+                                anadirSocio();
                             case 2:
                                 System.out.println("¡¡HASTA PRONTO!!");
                                 System.exit(1);
